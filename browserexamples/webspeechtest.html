@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Words</title>
+    <style>
+     
+    </style>
+  </head>
+  <body>
+    <p id="transcription"></p>
+    <button id="button-play-ws" class="button-demo">start</button>
+    <button id="button-stop-ws" class="button-demo">stop</button>
+
+    <script>
+      window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+
+      var recognizer = new window.SpeechRecognition();
+      var transcription = document.getElementById('transcription');
+      var log = document.getElementById('log');
+
+      // Recogniser doesn't stop listening even if the user pauses
+      recognizer.continuous = true;
+      // stream results, word by word, asap
+      recognizer.interimResults = true;
+
+      // Start recognising
+      recognizer.onresult = function(event) {
+        transcription.textContent = '';
+
+        for (var i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            transcription.textContent = event.results[i][0].transcript + ' (Confidence: ' + event.results[i][0].confidence + ')';
+          } else {
+            transcription.textContent += event.results[i][0].transcript;
+          }
+        }
+      }
+      
+
+      // Listen for errors
+      recognizer.onerror = function(event) {
+        console.log(event.message)
+      };
+
+      document.getElementById('button-play-ws').addEventListener('click', function() {
+        try {
+          recognizer.start();
+          console.log('recognition started');
+        } catch(err) {
+          console.log(err.message);
+        }
+      });
+
+      document.getElementById('button-stop-ws').addEventListener('click', function() {
+        recognizer.stop();
+        console.log('recognition stopped');
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Load the Paper.js library -->
+    <script type="text/javascript" src="paper-full.min.js"></script>
+    <!-- Define inlined PaperScript associate it with myCanvas -->
+    <script type="text/paperscript" canvas="myCanvas" >
+        var point = new Point(20, 20);
+var size = new Size(60, 60);
+var path = new Path.Rectangle(point, size);
+path.fillColor = 'black';
+
+function onMouseMove(event) {
+            path.position = event.point
+}
+    </script>
+</head>
+<body style="padding: 0; margin: 0;">
+    <canvas id="myCanvas" resize style="width: 100%; height: 100vh;"></canvas>
+</body>
+</html>
+
